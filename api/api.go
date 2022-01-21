@@ -21,6 +21,7 @@ func PostBook(context *gin.Context) {
 		return
 	}
 
+	//Check if the book with that ID already exists. If so return an error. Create if book doesn't already exist with that ID
 	foundBook, err := GetBookHelper(newBook.ID)
 	if err != nil {
 		book.Books = append(book.Books, newBook)
@@ -30,9 +31,6 @@ func PostBook(context *gin.Context) {
 		context.IndentedJSON(400, "Book with that ID already exists: "+foundBook.Title)
 		return
 	}
-
-	book.Books = append(book.Books, newBook)
-	context.IndentedJSON(http.StatusCreated, newBook)
 }
 
 func GetBookById(context *gin.Context) {
@@ -43,6 +41,7 @@ func GetBookById(context *gin.Context) {
 		return
 	}
 
+	//get the book with specified ID, if not return an error
 	book, err := GetBookHelper(idNumber)
 	if err == nil {
 		context.IndentedJSON(http.StatusOK, book)
