@@ -1,4 +1,4 @@
-module github.com/Jackolant/LibraryAPI/main
+module LibraryAPI
 
 go 1.17
 
