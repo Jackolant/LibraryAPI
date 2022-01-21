@@ -10,10 +10,10 @@ func main() {
 	router := gin.Default()
 
 	router.GET("/books", api.GetAllBooks)
-	router.GET("/books/:id", api.GetBookById)
-	router.POST("/books", api.PostBook)
-	router.PUT("/books/:id", api.UpdateBookById)
-	router.DELETE("/books/:id", api.DeleteBookById)
+	router.GET("/book/:id", api.GetBookById)
+	router.POST("/book", api.PostBook)
+	router.PUT("/book/:id", api.UpdateBookById)
+	router.DELETE("/book/:id", api.DeleteBookById)
 
 	router.Run("localhost:8080")
 }
