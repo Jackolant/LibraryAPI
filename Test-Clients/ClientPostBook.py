@@ -6,7 +6,7 @@ load = {'id': 4, 'title': 'My GO Adventures', 'author': 'Jake Ressler', 'genre':
 
 headers = {"Content-Type": "application/json"}
 
-r = requests.post(url+"/books", json = load, headers=headers)
+r = requests.post(url+"/book", json = load, headers=headers)
 
 print(r.content)
 

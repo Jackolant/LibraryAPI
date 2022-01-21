@@ -6,7 +6,7 @@ load = {'id': 7, 'title': 'Updated Go Adventures', 'author': 'Updated to someone
 
 headers = {"Content-Type": "application/json"}
 
-r = requests.put(url+"/books/4", json = load, headers=headers)
+r = requests.put(url+"/book/4", json = load, headers=headers)
 
 print(r.content)
 
