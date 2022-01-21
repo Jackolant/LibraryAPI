@@ -2,6 +2,7 @@ package api
 
 import (
 	"LibraryAPI/book"
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -20,6 +21,16 @@ func PostBook(context *gin.Context) {
 		return
 	}
 
+	foundBook, err := GetBookHelper(newBook.ID)
+	if err != nil {
+		book.Books = append(book.Books, newBook)
+		context.IndentedJSON(http.StatusCreated, newBook)
+		return
+	} else {
+		context.IndentedJSON(400, "Book with that ID already exists: "+foundBook.Title)
+		return
+	}
+
 	book.Books = append(book.Books, newBook)
 	context.IndentedJSON(http.StatusCreated, newBook)
 }
@@ -32,19 +43,35 @@ func GetBookById(context *gin.Context) {
 		return
 	}
 
+	book, err := GetBookHelper(idNumber)
+	if err == nil {
+		context.IndentedJSON(http.StatusOK, book)
+		return
+	} else {
+		context.IndentedJSON(404, "Book with that ID is not found")
+		return
+	}
+}
+
+//Helper function to loop trhough and find the book at that index
+func GetBookHelper(id int) (book.Book, error) {
 	for _, a := range book.Books {
-		if a.ID == idNumber {
-			context.IndentedJSON(http.StatusOK, a)
-			return
+		if a.ID == id {
+			return a, nil
 		}
 	}
+	return book.Book{}, errors.New("NOT_FOUND")
 }
 
 func DeleteBookById(context *gin.Context) {
 	id := context.Param("id")
 	index, err := strconv.Atoi(id)
-	index = index - 1
-	book.Books = append(book.Books[:index], book.Books[index+1:]...)
+	if err != nil {
+		context.IndentedJSON(400, "Error getting id as a number")
+		return
+	}
+	//Delete the book at the index
+	book.Books = append(book.Books[:index-1], book.Books[index:]...)
 	context.IndentedJSON(http.StatusOK, err)
 	return
 }
